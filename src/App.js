@@ -1,25 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import {StyleSheet, Text, View} from 'react-native';
+import Header from './components/Header';
+import StartGameScreen from './screens/StartGameScreen';
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> TEEST
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <View style={styles.container}>
+      <Header title={"Hello There!"} />
+      <StartGameScreen />
+    </View>
   );
 }
 
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+})
