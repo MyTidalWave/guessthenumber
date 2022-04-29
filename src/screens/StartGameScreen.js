@@ -1,65 +1,116 @@
 import { useState } from "react"
 import { StyleSheet, Text, View, TextInput } from 'react-native'
 import { Button } from "react-native-web";
+import Card from "../components/Card";
+import Input from "../components/Input";
+import NumberContainer from "../components/NumberContainer";
+import Colors from '../constants/colors'
 
 const StartGameScreen = () => {
+
+    const [enteredValue, setEnteredValue] = useState('')
+    const [confirmed, setConfirmed] = useState(false)
+    const [selectedNumber, setselectedNumber] = useState(undefined)
+
+    const numberInputHandler = input => {
+        setEnteredValue(input.replace(/[^0-9]/g, ''));
+    }
+    const resetInputHandler = () => {
+        setEnteredValue('')
+        setConfirmed(false)
+
+    }
+
+    const confirmInputHandler = () => {
+        const chosenNumber = parseInt(enteredValue);
+        if(isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) return
+
+        setConfirmed(true)
+        setselectedNumber(chosenNumber)
+        setEnteredValue('')
+    }
+
+    let confirmedOutput;
+
+    if(confirmed) {
+        confirmedOutput = (
+            <Card style={styles.selectedContainer}>
+                <Text> You selected: </Text>
+                <NumberContainer>{selectedNumber}</NumberContainer>
+            </Card>
+        )
+        
+    }
+
     return (
         <View style={styles.screen}>
-            <Text style={styles.title}>Select a number</Text>
-            <View style={styles.inputContainer}>
-                <TextInput />
-                <View style={styles.buttonContainer}>                   
-                    <Button style={styles.button} title="Reset"/>
-                    <Button style={styles.button} title="Confirm"/>
-
+            <Card>
+                <Text style={styles.title}>Select a number</Text>
+                <Input
+                    style={styles.input}
+                    blurOnSubmit //Android
+                    autoCapitalize='none'
+                    autoCorrect={false}
+                    keyboardType="number-pad"
+                    maxLength={2}
+                    onChangeText={numberInputHandler}
+                    value={enteredValue}
+                
+                />
+                <View style={styles.buttonContainer}> 
+                    <View style={styles.button} >
+                        <Button  
+                            title="Reset"
+                            color={Colors.primary}
+                            onPress={resetInputHandler}
+                        />
+                    </View>                  
+                    
+                    <View style={styles.button} >
+                        <Button 
+                            title="Confirm"
+                            color={Colors.secondary}
+                            onPress={confirmInputHandler}
+                        />
+                    </View>
+                    
                 </View>
-            </View>
+            </Card>
+            {confirmedOutput}
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    selectedContainer: {
+        marginTop: 20,
+        alignItems: 'center',
+        justifyContent: 'center'
+
+    },
     screen: {
         flex: 1,
         padding: 10,
         alignItems: 'center'
-
-
     },
     title: {
         fontSize: 20,
         marginVertical: 10
-
-
-    },
-    inputContainer: {
-        width: 300,
-        maxWidth: '80%',
-        alignItems: 'center',
-        //ios
-        shadowColor: 'black',
-        textShadowOffset: { width: 0, height: 2},
-        shadowOpacity: .26,
-        shadowRadius: 6,
-        //
-        backgroundColor: 'white',
-        
-        elevation: 5, //Only Android
-        padding: 20,
-        borderRadius: 10
-
-
-
     },
     button: {
+        width: 100
 
 
     },
     buttonContainer: {
-        flexDirection: 'row'
-
-
-
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-between',
+        paddingHorizontal: 15
+    },
+    input: {
+        width: 50,
+        textAlign: 'center'
     }
 });
 
