@@ -1,12 +1,13 @@
 import { useState } from "react"
 import { StyleSheet, Text, View, TextInput } from 'react-native'
+
 import { Button } from "react-native-web";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import NumberContainer from "../components/NumberContainer";
 import Colors from '../constants/colors'
 
-const StartGameScreen = () => {
+const StartGameScreen = ({ onStartGame }) => {
 
     const [enteredValue, setEnteredValue] = useState('')
     const [confirmed, setConfirmed] = useState(false)
@@ -36,7 +37,13 @@ const StartGameScreen = () => {
         confirmedOutput = (
             <Card style={styles.selectedContainer}>
                 <Text> You selected: </Text>
-                <NumberContainer>{selectedNumber}</NumberContainer>
+                <NumberContainer>
+                    {selectedNumber}
+                </NumberContainer>
+                <Button 
+                title='Ready to start game?'
+                onPress={ () => onStartGame(selectedNumber) } 
+                />
             </Card>
         )
         
